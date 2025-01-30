@@ -16,7 +16,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          persist-credentials: false # Prevents credential issues
+          persist-credentials: true # Pastikan credential tetap ada
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -28,12 +28,12 @@ jobs:
           echo "Last updated: $(date -u)" > README.md
 
       - name: Commit & Push Changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN_ACCESS }}
         run: |
-          git config --global user.name "rivopelu"
-          git config --global user.email "rivopelu12@gmail.com"
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
           git add README.md
           git commit -m "Auto-update README.md [skip ci]" || exit 0
-          git pull --rebase
-          git push https://x-access-token:${GITHUB_TOKEN}@github.com/rivopelu/automation-commit.git main
+          git pull --rebase origin main
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
