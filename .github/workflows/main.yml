@@ -22,11 +22,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-
       - name: Update README.md
         run: |
           echo "Last updated: $(date -u)" > README.md
-
       - name: Commit & Push Changes
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_ACCESS }}
