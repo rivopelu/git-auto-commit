@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '*/10 * * * *'  # Runs every 10 minutes
+    - cron: "*/10 * * * *" # Runs every 10 minutes
   workflow_dispatch: # Allows manual execution
 
 jobs:
@@ -29,11 +29,11 @@ jobs:
 
       - name: Commit & Push Changes
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN_ACCESS }}
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           git add README.md
           git commit -m "Auto-update README.md [skip ci]" || exit 0
           git pull --rebase
-          git push https://x-access-token:${GITHUB_TOKEN}@github.com/automation-commit.git main
+          git push https://x-access-token:${TOKEN_ACCESS}@github.com/automation-commit.git main
