@@ -30,4 +30,4 @@ jobs:
           git commit -m "Auto-update README.md"
           git push origin main
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ TOKEN_ACCESS }}
