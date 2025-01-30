@@ -1,37 +1,32 @@
-const simpleGit = require("simple-git");
-const cron = require("node-cron");
+require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
+const simpleGit = require("simple-git");
+const git = simpleGit();
 
-// Path ke repository lokal Anda
-const repoPath = path.join(__dirname, "automation-commit");
-const git = simpleGit(repoPath);
+const { GITHUB_USERNAME, GITHUB_REPO } = process.env;
+const REPO_PATH = path.resolve(__dirname, GITHUB_REPO);
 
-// Fungsi untuk mengubah isi README.md
-function updateReadme() {
-  const readmePath = path.join(repoPath, "README.md");
-  const date = new Date().toLocaleString();
-  const content = `# My Daily Commit\n\nTerakhir diupdate: ${date}`;
+async function updateReadme() {
+  const readmePath = path.join(REPO_PATH, "README.md");
 
-  fs.writeFileSync(readmePath, content, "utf8");
-}
+  // Update file README.md dengan timestamp terbaru
+  const timestamp = new Date().toISOString();
+  fs.writeFileSync(readmePath, `Last updated: ${timestamp}\n`, { flag: "w" });
 
-// Fungsi untuk melakukan commit dan push
-async function commitAndPush() {
+  console.log("README.md updated:", timestamp);
+
   try {
-    updateReadme(); // Update README.md
-    await git.add("README.md");
-    await git.commit(`Update README.md - ${new Date().toLocaleString()}`);
-    await git.push("origin", "main"); // Ganti 'main' dengan branch Anda
-    console.log("Commit dan push berhasil!");
+    await git
+      .cwd(REPO_PATH)
+      .add("README.md")
+      .commit(`Auto-update README.md - ${timestamp}`)
+      .push(["origin", "main"]);
+
+    console.log("Commit & Push Success!");
   } catch (error) {
-    console.error("Gagal melakukan commit dan push:", error);
+    console.error("Error during git operations:", error);
   }
 }
 
-cron.schedule("0 0 * * *", () => {
-  console.log("Memulai commit otomatis...");
-  commitAndPush();
-});
-
-console.log("Scheduler berjalan. Menunggu waktu yang dijadwalkan...");
+updateReadme();
