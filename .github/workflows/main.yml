@@ -36,4 +36,4 @@ jobs:
           git add README.md
           git commit -m "Auto-update README.md [skip ci]" || exit 0
           git pull --rebase
-          git push https://x-access-token:${TOKEN_ACCESS}@github.com/rivopelu/automation-commit.git main
+          git push https://x-access-token:${{secrets.TOKEN_ACCESS}}@github.com/rivopelu/automation-commit.git main
