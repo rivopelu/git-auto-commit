@@ -23,6 +23,12 @@ jobs:
         with:
           node-version: 18
 
+      - name: Install Dependencies
+        run: npm install # Jika ada dependencies di package.json
+
+      - name: Run index.js
+        run: node index.js # Menjalankan script
+
       - name: Update README.md
         run: |
           echo "Last updated: $(date -u)" > README.md
