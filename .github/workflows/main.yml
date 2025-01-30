@@ -15,12 +15,10 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
-
       - name: Update README.md with Timestamp
         run: |
           echo "Last updated: $(date -u)" > README.md
